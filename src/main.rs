@@ -6,15 +6,17 @@ use std::{
 };
 
 use crate::requestparser::HTTPVersion;
+use log::info;
 mod requestparser;
 mod responsemaker;
+mod logging;
 
 fn main() {
-    env_logger::init();
+    logging::configure_logging().unwrap();
     let listener = TcpListener::bind("[::0]:8080").unwrap();
     for stream in listener.incoming() {
         let stream = stream.unwrap();
-        debug!("connection established");
+        info!("connection established");
         handle_connection(stream);
     }
 }
